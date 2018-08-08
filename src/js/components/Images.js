@@ -1,14 +1,23 @@
 import React, { Component } from "react";
 
 class Images extends Component {
+    constructor() {
+        super();
+        this.state = {
+            width: 900,
+        };
+    }
+
     componentDidMount() {
+        const { width } = this.state;
         const { images } = this.props;
-        this.imgContainer.style.width = `${ ( images.length + 2 ) * 900 }px`;
+        this.imgContainer.style.width = `${ ( images.length + 2 ) * width }px`;
     }
 
     componentWillReceiveProps( nextProps ) {
+        const { width } = this.state;
         const { count, transition } = nextProps;
-        this.imgContainer.style.left = `${ count * -900 }px`;
+        this.imgContainer.style.left = `${ count * -width }px`;
         this.imgContainer.style.transition = transition;
     }
 

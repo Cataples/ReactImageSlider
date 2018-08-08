@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Buttons from "./Buttons";
-import Images from "./Images";
+import Buttons from "./buttons";
+import Images from "./images";
 import Bullets from "./bullets";
 
 class ImageSlider extends Component {
@@ -19,22 +19,22 @@ class ImageSlider extends Component {
             isButtonActive: true,
         };
 
-        this.clickRight = this.clickRight.bind( this );
-        this.clickLeft = this.clickLeft.bind( this );
+        this.handleClickRight = this.handleClickRight.bind( this );
+        this.handleClickLeft = this.handleClickLeft.bind( this );
         this.activateButton = this.activateButton.bind( this );
-        this.bulletClick = this.bulletClick.bind( this );
+        this.handleBulletClick = this.handleBulletClick.bind( this );
     }
 
     componentDidMount() {
         const { images } = this.state;
 
-        const lastEl = images[ images.length - 1 ];
-        const firstEl = images[ 0 ];
+        const lastElelemnt = images[ images.length - 1 ];
+        const firstElement = images[ 0 ];
 
         const imagesCopy = images.slice();
         const initialImages = images.slice();
-        imagesCopy.unshift( lastEl );
-        imagesCopy.push( firstEl );
+        imagesCopy.unshift( lastElelemnt );
+        imagesCopy.push( firstElement );
 
         this.setState( {
             initialImages,
@@ -42,14 +42,15 @@ class ImageSlider extends Component {
         } );
     }
 
-    clickRight() {
+    handleClickRight() {
         const { images, activeImageCount, isButtonActive } = this.state;
+        const lastImageIndex = images.length - 1;
 
         if ( !isButtonActive ) {
             return;
         }
 
-        if ( activeImageCount === images.length - 2 ) {
+        if ( activeImageCount === lastImageIndex - 1 ) {
             this.setState( {
                 activeImageCount: activeImageCount + 1,
                 isButtonActive: false,
@@ -71,8 +72,9 @@ class ImageSlider extends Component {
         setTimeout( this.activateButton, 1000 );
     }
 
-    clickLeft() {
+    handleClickLeft() {
         const { images, activeImageCount, isButtonActive } = this.state;
+        const lastImageIndex = images.length - 1;
 
         if ( !isButtonActive ) {
             return;
@@ -87,7 +89,7 @@ class ImageSlider extends Component {
             setTimeout( () => {
                 this.setState( {
                     transition: "all 0s",
-                    activeImageCount: images.length - 2,
+                    activeImageCount: lastImageIndex - 1,
                 } );
             }, 1000 );
         } else {
@@ -99,7 +101,7 @@ class ImageSlider extends Component {
         }
 
         const newActiveImageCount =
-            activeImageCount === 0 ? images.length - 2 : activeImageCount - 1;
+            activeImageCount === 0 ? lastImageIndex - 1 : activeImageCount - 1;
 
         this.setState( {
             activeImageCount: newActiveImageCount,
@@ -114,7 +116,7 @@ class ImageSlider extends Component {
         } );
     }
 
-    bulletClick( index ) {
+    handleBulletClick( index ) {
         return () => {
             this.setState( {
                 activeImageCount: index + 1,
@@ -124,21 +126,21 @@ class ImageSlider extends Component {
     }
 
     render() {
+        const {
+            initialImages, bulletIndex, activeImageCount, images, transition,
+        } = this.state;
+
         return (
             <div className="viewport">
                 <Bullets
-                    initialImages={ this.state.initialImages }
-                    bulletClick={ this.bulletClick }
-                    buleltIndex={ this.state.bulletIndex }
-                    activeImageCount={ this.state.activeImageCount }
+                    initialImages={ initialImages }
+                    bulletClick={ this.handleBulletClick }
+                    buleltIndex={ bulletIndex }
+                    activeImageCount={ activeImageCount }
                 />
-                <Buttons direction="right" click={ this.clickRight } />
-                <Buttons direction="left" click={ this.clickLeft } />
-                <Images
-                    images={ this.state.images }
-                    count={ this.state.activeImageCount }
-                    transition={ this.state.transition }
-                />
+                <Buttons direction="right" click={ this.handleClickRight } />
+                <Buttons direction="left" click={ this.handleClickLeft } />
+                <Images images={ images } count={ activeImageCount } transition={ transition } />
             </div>
         );
     }
