@@ -3,5 +3,12 @@
     "env": {
         "browser": true,
         "jest": true
+    },
+    "plugins": ["react"],
+    "rules": {
+        "react/prop-types": 0,
+        "react/no-did-mount-set-state": 0,
+        "jsx-a11y/click-events-have-key-events": 0,
+        "jsx-a11y/no-static-element-interactions": 0
     }
 }

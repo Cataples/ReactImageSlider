@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 
 class Images extends Component {
-    constructor( props ) {
-        super( props );
-        this.state = {
-            count: this.props.count,
-        };
-    }
-
     componentDidMount() {
         const { images } = this.props;
         this.imgContainer.style.width = `${ ( images.length + 2 ) * 900 }px`;
@@ -27,8 +20,8 @@ class Images extends Component {
                     this.imgContainer = input;
                 } }
             >
-                {this.props.images.map( ( el, index ) => (
-                    <img key={ index } className="images" src={ el } alt="nature" />
+                {this.props.images.map( el => (
+                    <img key={ el } className="images" src={ el } alt="nature" />
                 ) )}
             </div>
         );
